@@ -1,6 +1,4 @@
-import { timeStamp } from "console";
-import { Column, DeleteDateColumn, Entity, UpdateDateColumn } from "typeorm";
-
+import { Column, Entity } from "typeorm";
 @Entity({name: 'actor'})
 export class Actor{
     @Column({primary: true, generated: true, name: 'actor_id', type: 'smallint', unsigned: true})
@@ -12,9 +10,7 @@ export class Actor{
     @Column({name: 'last_name', type: 'varchar', length: 45, nullable: false})
     last_name: string;
 
-    @Column({type: 'timestamp',default: () => 'CURRENT_TIMESTAMP' })
+    @Column({type: 'timestamp',default: 'CURRENT_TIMESTAMP'})
     last_update: Date;
 
-    @DeleteDateColumn({type: 'timestamp', default: null, nullable: true})
-    deleted_at: Date;
 }

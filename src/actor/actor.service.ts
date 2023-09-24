@@ -1,9 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Actor } from './entity/actor.entity';
 import { DeleteResult, Repository } from 'typeorm';
 import { CreateActorDTO } from './dto/create-actor.dto';
 import { UpdateActorDTO } from './dto/update-actor.dto';
+import { IPaginationOptions } from 'src/utils/types/pagination-options';
+import { USER_NOT_FOUND } from 'src/utils/errors/errors.constants';
 
 @Injectable()
 export class ActorService {
@@ -12,8 +14,16 @@ export class ActorService {
     private readonly actorRepository: Repository<Actor>,
   ) {}
 
-  async findAll(): Promise<Actor[]> {
-    return await this.actorRepository.find();
+  async findAll(pagination: IPaginationOptions): Promise<Actor[]> {
+    const limit = Number(pagination.limit) || 10;
+    const page = Number(pagination.page) || 1;
+    const skip = (page - 1) * limit;
+
+    return await this.actorRepository.find({
+      skip: skip,
+      take: limit,
+      order: { actor_id: 'ASC' },
+    });
   }
 
   async findById(actor_id: number): Promise<Actor> {
@@ -25,13 +35,17 @@ export class ActorService {
     return await this.actorRepository.save(actor);
   }
 
-  async update(actor_id: number, updateActor: UpdateActorDTO): Promise<Actor>{
-     await this.actorRepository.update(actor_id, updateActor);
-     return await this.findById(actor_id);
+  async update(actor_id: number, updateActor: UpdateActorDTO): Promise<Actor> {
+    const testActor = await this.findById(actor_id);
+    if (!testActor) throw new NotFoundException(USER_NOT_FOUND);
+
+    await this.actorRepository.update(actor_id, updateActor);
+    return testActor;
   }
 
-  async delete(actor_id: number): Promise<DeleteResult>{
-    return await this.actorRepository.softDelete(actor_id);
+  async delete(actor_id: number): Promise<DeleteResult> {
+    const testActor = await this.findById(actor_id);
+    if (!testActor) throw new NotFoundException(USER_NOT_FOUND);
+    return await this.actorRepository.delete(actor_id);
   }
-  
 }

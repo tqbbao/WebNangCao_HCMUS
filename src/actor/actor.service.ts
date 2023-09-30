@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Actor } from './entity/actor.entity';
+import { Actor } from '../entity/actor.entity';
 import { DeleteResult, Repository } from 'typeorm';
 import { CreateActorDTO } from './dto/create-actor.dto';
 import { UpdateActorDTO } from './dto/update-actor.dto';
@@ -40,7 +40,9 @@ export class ActorService {
     if (!testActor) throw new NotFoundException(USER_NOT_FOUND);
 
     await this.actorRepository.update(actor_id, updateActor);
-    return testActor;
+
+
+    return await this.findById(actor_id);
   }
 
   async delete(actor_id: number): Promise<DeleteResult> {

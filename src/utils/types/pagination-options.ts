@@ -1,5 +1,9 @@
-export interface IPaginationOptions {
-    page: number;
-    limit: number;
-  }
-  
+import { IsInt, IsNumber } from 'class-validator';
+
+export class IPaginationOptions {
+
+
+  page: number;
+
+  limit: number;
+}

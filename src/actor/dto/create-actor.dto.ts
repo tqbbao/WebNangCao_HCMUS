@@ -1,13 +1,24 @@
-import { IsNotEmpty, IsString, Length } from "class-validator";
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsString, Length, Matches } from 'class-validator';
+export class CreateActorDTO {
+  // @ApiProperty({ description: 'User name' })
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  @Length(1, 45, { message: 'Firstname must be between 1 and 45 characters.' })
+  @Matches(/^[A-Za-z][^\W_]+$/, {
+    message:
+      'First name contains only letters (upper and lower case) and no numbers, special characters',
+  })
+  first_name: string;
 
-export class CreateActorDTO{
-    @IsNotEmpty()
-    @IsString()
-    @Length(1, 45, { message: 'Firstname must be between 1 and 45 characters.' })
-    first_name: string;
-    
-    @IsNotEmpty()
-    @IsString()
-    @Length(1, 45, { message: 'Lastname must be between 3 and 45 characters.' })
-    last_name: string;
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  @Length(1, 45, { message: 'Firstname must be between 1 and 45 characters.' })
+  @Matches(/^[A-Za-z][^\W_]+$/, {
+    message:
+      'Last name contains only letters (upper and lower case) and no numbers, special characters',
+  })
+  last_name: string;
 }

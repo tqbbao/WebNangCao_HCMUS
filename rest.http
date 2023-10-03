@@ -1,0 +1,26 @@
+###
+POST http://localhost:3000/actor
+content-type: application/json
+
+{
+    "first_name": "admin",
+    "last_name": "demo"
+}
+
+###
+POST http://localhost:3000/actor
+content-type: application/json
+
+{
+    "first_name": "@@@@@@@",
+    "last_name": "111111111"
+}
+
+###
+GET http://localhost:3000/actor/1212312312312
+
+###
+GET http://localhost:3000/actor/121
+
+###
+GET http://localhost:3000/actor/dadadadadd

@@ -5,10 +5,11 @@ import { HttpExceptionFilter } from './utils/filters/http-exception.filter';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { LoggerInterceptor } from './interceptors/logger.interceptor';
 import { LoggerServiceRotation } from './helpers/LoggerServiceRotation';
+import { LoggerService } from './helpers/LoggerServiceWinston';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.useGlobalInterceptors(new LoggerInterceptor(new LoggerServiceRotation));
+  app.useGlobalInterceptors(new LoggerInterceptor(new LoggerServiceRotation, new LoggerService));
   app.useGlobalPipes(new ValidationPipe());
   const config = new DocumentBuilder()
     .setTitle('Sakila API')

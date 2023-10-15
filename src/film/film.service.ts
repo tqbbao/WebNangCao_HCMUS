@@ -25,9 +25,9 @@ export class FilmService {
     return await this.filmRepository.find({
       skip: skip,
       take: limit,
-      order: { film_id: 'ASC' },
+      order: { filmId: 'ASC' },
       relations: {
-        language_id: true,
+        languageId: true,
         original_language_id: true,
       },
     });
@@ -35,10 +35,10 @@ export class FilmService {
 
   async findById(film_id: number): Promise<Film> {
     return await this.filmRepository.findOne({
-      where: { film_id: film_id },
+      where: { filmId: film_id },
       relations: {
-        language_id: true,
-        original_language_id: true,
+        language: true,
+        originalLanguage: true,
       },
     });
   }
@@ -49,18 +49,18 @@ export class FilmService {
     });
     console.log(filmReal);
     const language_id = await this.languageRepository.findOne({
-      where: { language_id: createFilm.language_id },
+      where: { languageId: createFilm.language_id },
     });
     const original_language_id = createFilm.original_language_id
       ? await this.languageRepository.findOne({
-          where: { language_id: createFilm.original_language_id },
+          where: { languageId: createFilm.original_language_id },
         })
       : null;
 
     try {
       const film = await this.filmRepository.create({
         ...createFilm,
-        language_id,
+        language,
         original_language_id,
       });
       return await this.filmRepository.save(film);

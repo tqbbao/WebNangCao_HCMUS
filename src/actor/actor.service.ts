@@ -22,17 +22,19 @@ export class ActorService {
     return await this.actorRepository.find({
       skip: skip,
       take: limit,
-      order: { actor_id: 'ASC' },
+      order: { actorId: 'ASC' },
     });
   }
 
   async findById(actor_id: number): Promise<Actor> {
-    return await this.actorRepository.findOneBy({ actor_id: actor_id });
+    return await this.actorRepository.findOneBy({ actorId: actor_id });
   }
 
   async create(createActor: CreateActorDTO): Promise<Actor> {
+    // const actor = this.actorRepository.create(createActor);
+    // return await this.actorRepository.save(actor);
     const actor = this.actorRepository.create(createActor);
-    return await this.actorRepository.save(actor);
+    return;
   }
 
   async update(actor_id: number, updateActor: UpdateActorDTO): Promise<Actor> {

@@ -10,7 +10,7 @@ export class CreateActorDTO {
     message:
       'First name contains only letters (upper and lower case) and no numbers, special characters',
   })
-  first_name: string;
+  firstname: string;
 
   @ApiProperty()
   @IsNotEmpty()
@@ -20,5 +20,5 @@ export class CreateActorDTO {
     message:
       'Last name contains only letters (upper and lower case) and no numbers, special characters',
   })
-  last_name: string;
+  lastname: string;
 }

@@ -1,43 +1,104 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from "typeorm";
-import { Language } from "./language.entity";
-
-@Entity({name: 'film'})
-export class Film{
-    @Column({primary: true, generated: true, name: 'film_id', type: 'smallint', unsigned: true, nullable: false})
-    film_id: number;
-    @Column({name: 'title', type: 'varchar', length: 255, nullable: false})
+import {
+    Column,
+    Entity,
+    Index,
+    JoinColumn,
+    ManyToOne,
+    PrimaryGeneratedColumn,
+  } from "typeorm";
+  import { Language } from "./language.entity"
+  
+  @Index("idx_title", ["title"], {})
+  @Index("idx_fk_language_id", ["languageId"], {})
+  @Index("idx_fk_original_language_id", ["originalLanguageId"], {})
+  @Entity("film", { schema: "temp_sakila" })
+  export class Film {
+    @PrimaryGeneratedColumn({ type: "smallint", name: "film_id", unsigned: true })
+    filmId: number;
+  
+    @Column("varchar", { name: "title", length: 255 })
     title: string;
-    @Column({name: 'description', type: 'text', nullable: true, default: null})
-    description: string;
-    @Column({name: 'release_year', type: 'year', nullable: true, default: null})
-    release_year: number;
-    // @Column({name: 'language_id', type: 'tinyint', unsigned: true, nullable: false})
-    // language_id: number;
-    // @Column({name: 'original_language_id', type: 'tinyint', unsigned: true, nullable: true, default: null})
-    // original_language_id: number;
-    @Column({name: 'rental_duration', type: 'tinyint', unsigned: true, nullable: false, default: 3})
-    rental_duration: number;
-    @Column({name: 'rental_rate', type: 'decimal', precision: 4, scale: 2, nullable: false, default: 4.99})
-    rental_rate: number;
-    @Column({name: 'length', type: 'smallint', unsigned: true, nullable: true, default: null})
-    length: number;
-    @Column({name: 'replacement_cost', type: 'decimal', precision: 5, scale: 2, nullable: false, default: 19.99})
-    replacement_cost: number;
-    @Column({name: 'rating', type: 'enum', enum: ['G','PG','PG-13','R','NC-17'], nullable: true, default: null})
-    rating: string;
-    @Column({name: 'special_features', type: 'set', enum: ['Trailers','Commentaries','Deleted Scenes','Behind the Scenes'], nullable: true, default: null})
-    special_features: string;
-    @Column({name: 'last_update', type: 'timestamp', default: 'CURRENT_TIMESTAMP'})
-    last_update: Date;
-
-    @OneToOne(() => Language)
-    @JoinColumn({name: 'language_id'})
-    language_id: Language;
-    
-    @OneToOne(() => Language)
-    @JoinColumn({name: 'original_language_id'})
-    original_language_id: Language;
-
-    
-
-}
+  
+    @Column("text", { name: "description", nullable: true })
+    description: string | null;
+  
+    @Column("year", { name: "release_year", nullable: true })
+    releaseYear: number | null;
+  
+    @Column("tinyint", { name: "language_id", unsigned: true })
+    languageId: number;
+  
+    @Column("tinyint", {
+      name: "original_language_id",
+      nullable: true,
+      unsigned: true,
+    })
+    originalLanguageId: number | null;
+  
+    @Column("tinyint", {
+      name: "rental_duration",
+      unsigned: true,
+      default: () => "'3'",
+    })
+    rentalDuration?: number;
+  
+    @Column("decimal", {
+      name: "rental_rate",
+      precision: 4,
+      scale: 2,
+      default: () => "'4.99'",
+    })
+    rentalRate?: string;
+  
+    @Column("smallint", { name: "length", nullable: true, unsigned: true })
+    length: number | null;
+  
+    @Column("decimal", {
+      name: "replacement_cost",
+      precision: 5,
+      scale: 2,
+      default: () => "'19.99'",
+    })
+    replacementCost?: string;
+  
+    @Column("enum", {
+      name: "rating",
+      nullable: true,
+      enum: ["G", "PG", "PG-13", "R", "NC-17"],
+      default: () => "'G'",
+    })
+    rating?: "G" | "PG" | "PG-13" | "R" | "NC-17" | null;
+  
+    @Column("set", {
+      name: "special_features",
+      nullable: true,
+      enum: ["Trailers", "Commentaries", "Deleted Scenes", "Behind the Scenes"],
+    })
+    specialFeatures?:
+      | ("Trailers" | "Commentaries" | "Deleted Scenes" | "Behind the Scenes")[]
+      | null;
+  
+    @Column("timestamp", {
+      name: "last_update",
+      default: () => "CURRENT_TIMESTAMP",
+    })
+    lastUpdate?: Date;
+  
+    @ManyToOne(() => Language, (language) => language.films, {
+      onDelete: "NO ACTION",
+      onUpdate: "CASCADE",
+    })
+    @JoinColumn([{ name: "language_id", referencedColumnName: "languageId" }])
+    language: Language;
+  
+    @ManyToOne(() => Language, (language) => language.films2, {
+      onDelete: "NO ACTION",
+      onUpdate: "CASCADE",
+    })
+    @JoinColumn([
+      { name: "original_language_id", referencedColumnName: "languageId" },
+    ])
+    originalLanguage: Language;
+  
+  }
+  

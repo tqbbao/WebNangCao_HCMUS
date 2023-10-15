@@ -9,7 +9,7 @@ import { LoggerService } from './helpers/LoggerServiceWinston';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.useGlobalInterceptors(new LoggerInterceptor(new LoggerServiceRotation, new LoggerService));
+  //app.useGlobalInterceptors(new LoggerInterceptor(new LoggerServiceRotation, new LoggerService));
   app.useGlobalPipes(new ValidationPipe());
   const config = new DocumentBuilder()
     .setTitle('Sakila API')

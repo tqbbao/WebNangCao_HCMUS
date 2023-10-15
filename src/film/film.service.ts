@@ -7,7 +7,6 @@ import { CreateFilmDTO } from './dto/create-film.dto';
 import { Language } from 'src/entity/language.entity';
 import { plainToClass } from 'class-transformer';
 import { UpdateFilmDTO } from './dto/update-film.dto';
-import { FILM_NOT_FOUND } from 'src/utils/errors/errors.constants';
 
 @Injectable()
 export class FilmService {
@@ -25,20 +24,20 @@ export class FilmService {
     return await this.filmRepository.find({
       skip: skip,
       take: limit,
-      order: { film_id: 'ASC' },
+      order: { filmId: 'ASC' },
       relations: {
-        language_id: true,
-        original_language_id: true,
+        language: true,
+        originalLanguage: true,
       },
     });
   }
 
   async findById(film_id: number): Promise<Film> {
     return await this.filmRepository.findOne({
-      where: { film_id: film_id },
+      where: { filmId: film_id },
       relations: {
-        language_id: true,
-        original_language_id: true,
+        language: true,
+        originalLanguage: true,
       },
     });
   }
@@ -49,50 +48,52 @@ export class FilmService {
     });
     console.log(filmReal);
     const language_id = await this.languageRepository.findOne({
-      where: { language_id: createFilm.language_id },
+      where: { languageId: createFilm.languageId },
     });
-    const original_language_id = createFilm.original_language_id
+    const original_language_id = createFilm.originalLanguageId
       ? await this.languageRepository.findOne({
-          where: { language_id: createFilm.original_language_id },
+          where: { languageId: createFilm.originalLanguageId },
         })
       : null;
 
     try {
-      const film = await this.filmRepository.create({
+      const film = await this.filmRepository.create([{
         ...createFilm,
-        language_id,
-        original_language_id,
-      });
-      return await this.filmRepository.save(film);
+        languageId: language_id,
+        originalLanguageId: original_language_id,
+      }]);
+      return await this.filmRepository.save(film[0]);
     } catch (error) {
       throw new Error(error);
     }
   }
 
   async update(film_id: number, updateFilm: UpdateFilmDTO): Promise<Film> {
-    const testFilm = await this.findById(film_id);
-    if (!testFilm) throw new NotFoundException(FILM_NOT_FOUND);
+    //   const testFilm = await this.findById(film_id);
+    //   if (!testFilm) throw new NotFoundException(FILM_NOT_FOUND);
 
-    const filmReal = plainToClass(CreateFilmDTO, updateFilm, {
-      excludeExtraneousValues: true,
-    });
-    const language_id = await this.languageRepository.findOne({
-      where: { language_id: filmReal.language_id },
-    });
-    const original_language_id = filmReal.original_language_id
-      ? await this.languageRepository.findOne({
-          where: { language_id: filmReal.original_language_id },
-        })
-      : null;
+    //   const filmReal = plainToClass(CreateFilmDTO, updateFilm, {
+    //     excludeExtraneousValues: true,
+    //   });
+    //   const language_id = await this.languageRepository.findOne({
+    //     where: { languageId: filmReal.languageId },
+    //   });
+    //   const original_language_id = filmReal.originalLanguageId
+    //     ? await this.languageRepository.findOne({
+    //         where: { languageId: filmReal.originalLanguageId },
+    //       })
+    //     : null;
 
-    const film = {...filmReal, language_id, original_language_id};  
+    //   const film = {...filmReal, language_id, original_language_id};
 
-    await this.filmRepository.update(film_id, film);
-    return await this.findById(film_id);
-  }
-  async delete(film_id: number): Promise<DeleteResult> {
-    const testFilm = await this.findById(film_id);
-    if (!testFilm) throw new NotFoundException(FILM_NOT_FOUND);
-    return await this.filmRepository.delete(film_id);
+    //   await this.filmRepository.update(film_id, film);
+    //   return await this.findById(film_id);
+    // }
+    // async delete(film_id: number): Promise<DeleteResult> {
+    //   const testFilm = await this.findById(film_id);
+    //   if (!testFilm) throw new NotFoundException(FILM_NOT_FOUND);
+    //   return await this.filmRepository.delete(film_id);
+    // }
+    return;
   }
 }

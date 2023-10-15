@@ -1,16 +1,22 @@
-import { Column, Entity } from "typeorm";
-@Entity({name: 'actor'})
-export class Actor{
-    @Column({primary: true, generated: true, name: 'actor_id', type: 'smallint', unsigned: true})
-    actor_id: number;
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+@Entity("actor")
+export class Actor {
+  @PrimaryGeneratedColumn({
+    type: "smallint",
+    name: "actor_id",
+    unsigned: true,
+  })
+  actorId: number;
 
-    @Column({name: 'first_name', type: 'varchar', length: 45, nullable: false})
-    first_name: string;
+  @Column("varchar", { name: "first_name", length: 45 })
+  firstName: string;
 
-    @Column({name: 'last_name', type: 'varchar', length: 45, nullable: false})
-    last_name: string;
+  @Column("varchar", { name: "last_name", length: 45 })
+  lastName: string;
 
-    @Column({type: 'timestamp',default: 'CURRENT_TIMESTAMP'})
-    last_update: Date;
-
+  @Column("timestamp", {
+    name: "last_update",
+    default: () => "CURRENT_TIMESTAMP",
+  })
+  lastUpdate: Date;
 }

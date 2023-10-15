@@ -1,11 +1,27 @@
-import { Column, Entity } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Film } from "./film.entity";
 
-@Entity({ name: 'language' })
-export class Language{
-    @Column({primary: true, generated: true, name: 'language_id', type: 'tinyint', unsigned: true, nullable: false})
-    language_id: number;
-    @Column({name: 'name', type: 'char', length: 20, nullable: false})
-    name: string;
-    @Column({name: 'last_update', type: 'timestamp', default: 'CURRENT_TIMESTAMP'})
-    last_update: Date;
+@Entity("language", { schema: "temp_sakila" })
+export class Language {
+  @PrimaryGeneratedColumn({
+    type: "tinyint",
+    name: "language_id",
+    unsigned: true,
+  })
+  languageId: number;
+
+  @Column("char", { name: "name", length: 20 })
+  name: string;
+
+  @Column("timestamp", {
+    name: "last_update",
+    default: () => "CURRENT_TIMESTAMP",
+  })
+  lastUpdate: Date;
+
+  @OneToMany(() => Film, (film) => film.language)
+  films: Film[];
+
+  @OneToMany(() => Film, (film) => film.originalLanguage)
+  films2: Film[];
 }

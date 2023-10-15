@@ -10,6 +10,7 @@ import { FilmModule } from './film/film.module';
 import { Film } from './entity/film.entity';
 import { Language } from './entity/language.entity';
 import { LoggerService } from './helpers/LoggerServiceWinston';
+import { StaffModule } from './staff/staff.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { LoggerService } from './helpers/LoggerServiceWinston';
     }),
     ActorModule,
     FilmModule,
+    StaffModule,
   ],
   controllers: [AppController],
   providers: [

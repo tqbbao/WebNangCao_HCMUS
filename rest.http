@@ -3,8 +3,8 @@ POST http://localhost:3000/actor
 content-type: application/json
 
 {
-    "first_name": "admin",
-    "last_name": "demo"
+    "firstName": "today",
+    "lastName": "today"
 }
 
 ###

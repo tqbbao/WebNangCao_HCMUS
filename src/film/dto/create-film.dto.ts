@@ -14,66 +14,37 @@ import { RatingRole } from 'src/utils/enums/RatingRole.enum';
 import { SpecialFeaturesRole } from 'src/utils/enums/SpecialFeaturesRole.enum';
 
 export class CreateFilmDTO {
-
-  @Expose()
   @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
-  @Length(1, 255, {
-    message: 'Title must be between 1 and 255 characters.',
-  })
   title: string;
 
-  @Expose()
   @ApiProperty()
-  @IsString()
-  description?: string;
+  description: string;
 
-  @Expose()
   @ApiProperty()
-  @IsNumber()
-  release_year?: number;
+  releaseYear: number;
 
-  @Expose()
   @ApiProperty()
-  @IsNumber()
-  @IsPositive()
-  rental_duration?: number;
+  languageId: number;
 
-  @Expose()
   @ApiProperty()
-  rental_rate?: number;
+  originalLanguageId: number;
 
-  @Expose()
   @ApiProperty()
-  @IsNumber()
-  @IsPositive()
-  length?: number;
+  rentalDuration: number;
 
-  @Expose()
+  @ApiProperty({enum: RatingRole})
+  rentalRate: RatingRole;
+
   @ApiProperty()
-  replacement_cost?: number;
+  length: number;
 
-  @Expose()
-  @ApiProperty({ enum: RatingRole })
-  @IsString()
-  @IsEnum(RatingRole)
-  rating?: RatingRole;
-
-  @Expose()
-  @ApiProperty({ enum: SpecialFeaturesRole })
-  @IsString()
-  @IsEnum(SpecialFeaturesRole)
-  special_features?: SpecialFeaturesRole;
-
-  @Expose()
   @ApiProperty()
-  @IsNotEmpty()
-  @IsNumber()
-  @IsPositive()
-  language_id: number;
+  replacementCost: string;
 
-  @Expose()
   @ApiProperty()
-  original_language_id: number;
+  rating: string;
+
+  @ApiProperty({enum: SpecialFeaturesRole})
+  specialFeatures: SpecialFeaturesRole;
+
 }

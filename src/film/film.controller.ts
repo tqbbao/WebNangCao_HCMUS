@@ -71,7 +71,7 @@ export class FilmController {
     @ApiResponse({ status: 204, description: 'No Content.' })
     @ApiResponse({ status: 400, description: 'Bad request.' })
     async delete(@Param('id', ParseIntPipe) film_id: number){
-        return await this.filmService.delete(film_id);
+        //return await this.filmService.delete(film_id);
     }
 
     

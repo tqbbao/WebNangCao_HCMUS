@@ -6,11 +6,12 @@ import { CreateActorDTO } from './dto/create-actor.dto';
 import { UpdateActorDTO } from './dto/update-actor.dto';
 import { IPaginationOptions } from 'src/utils/types/pagination-options';
 import { USER_NOT_FOUND } from 'src/utils/errors/errors.constants';
-
+import { DeepPartial } from 'typeorm';
 @Injectable()
 export class ActorService {
   constructor(
     @InjectRepository(Actor)
+    // private readonly actorRepository: Repository<Actor>,
     private readonly actorRepository: Repository<Actor>,
   ) {}
 
@@ -22,16 +23,16 @@ export class ActorService {
     return await this.actorRepository.find({
       skip: skip,
       take: limit,
-      order: { actor_id: 'ASC' },
-    });
+      order: { actorId: 'ASC'}
+    })
   }
 
   async findById(actor_id: number): Promise<Actor> {
-    return await this.actorRepository.findOneBy({ actor_id: actor_id });
+    return await this.actorRepository.findOneBy({ actorId: actor_id });
   }
 
   async create(createActor: CreateActorDTO): Promise<Actor> {
-    const actor = this.actorRepository.create(createActor);
+    const actor = this.actorRepository.create(createActor );
     return await this.actorRepository.save(actor);
   }
 

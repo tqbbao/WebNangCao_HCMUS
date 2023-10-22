@@ -11,6 +11,8 @@ import { Film } from './entity/film.entity';
 import { Language } from './entity/language.entity';
 import { LoggerService } from './helpers/LoggerServiceWinston';
 import { AuthModule } from './auth/auth.module';
+import { User } from './entity/user.entity';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -21,9 +23,10 @@ import { AuthModule } from './auth/auth.module';
       username: 'root',
       password: 'admin123',
       database: 'temp_sakila',
-      entities: [Actor, Film, Language],
+      entities: [Actor, Film, Language, User],
       synchronize: false,
     }),
+    ConfigModule.forRoot(),
     ActorModule,
     FilmModule,
     AuthModule,

@@ -1,6 +1,6 @@
 import { Column, Entity, JoinTable, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity()
+@Entity('user')
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
@@ -11,6 +11,6 @@ export class User {
   @Column({ nullable: true })
   password: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, name: 'refresh_token' })
   refreshToken: string;
 }

@@ -6,7 +6,7 @@ import { AuthType } from './enums/auth-type.enum';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 
 @Auth(AuthType.None)
-@Controller('authentication')
+@Controller('auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,

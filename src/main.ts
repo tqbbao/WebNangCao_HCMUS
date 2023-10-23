@@ -11,6 +11,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   //app.useGlobalInterceptors(new LoggerInterceptor(new LoggerServiceRotation, new LoggerService));
   app.useGlobalPipes(new ValidationPipe());
+  app.enableCors({});
   const config = new DocumentBuilder()
     .setTitle('Sakila API')
     .setDescription('The sakila API description')

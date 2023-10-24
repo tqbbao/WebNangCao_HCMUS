@@ -26,7 +26,9 @@ import { ConfigModule } from '@nestjs/config';
       entities: [Actor, Film, Language, User],
       synchronize: false,
     }),
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     ActorModule,
     FilmModule,
     AuthModule,

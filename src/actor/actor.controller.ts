@@ -11,6 +11,7 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ActorService } from './actor.service';
 import { Actor } from '../entity/actor.entity';
@@ -25,6 +26,10 @@ import {
 } from 'src/utils/errors/errors.constants';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CustomException } from 'src/utils/filters/custom-exception';
+import { AuthGuard } from 'src/auth/guards/auth.guard';
+
+
+@UseGuards(AuthGuard)
 @ApiTags('actor')
 @Controller('actor')
 export class ActorController {

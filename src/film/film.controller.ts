@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpStatus, NotFoundException, Param, Patch, Post, Query, ParseIntPipe, HttpCode } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, NotFoundException, Param, Patch, Post, Query, ParseIntPipe, HttpCode, UseGuards } from '@nestjs/common';
 import { FilmService } from './film.service';
 import { IPaginationOptions } from 'src/utils/types/pagination-options';
 import { ApiTags, ApiQuery, ApiOperation, ApiResponse } from '@nestjs/swagger';
@@ -7,12 +7,10 @@ import { CustomException } from 'src/utils/filters/custom-exception';
 import { FILM_NOT_FOUND, USER_NO_CONTENT } from 'src/utils/errors/errors.constants';
 import { UpdateFilmDTO } from './dto/update-film.dto';
 import { CreateFilmDTO } from './dto/create-film.dto';
-import { Not } from 'typeorm';
 @ApiTags('film')
 @Controller('film')
 export class FilmController {
     constructor(private readonly filmService: FilmService) {}
-
 
     @Get()
     @HttpCode(HttpStatus.OK)

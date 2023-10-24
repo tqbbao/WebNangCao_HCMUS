@@ -27,9 +27,6 @@ export class AuthService {
   }
 
   async signIn(signInDto: SignInDto) {
-   
-
-
     const user = await this.usersRepository.findOne({
       where: { email: signInDto.email },
     });
@@ -106,4 +103,8 @@ export class AuthService {
       );
     }
   }
+
+  
+  
+
 }

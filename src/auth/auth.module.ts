@@ -7,11 +7,12 @@ import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
+    
     TypeOrmModule.forFeature([User]),
     JwtModule.register({
       global: true,
-      secret: 'GXtyJiKZq2cQFmEeAnHzNslLSf5PrWhv',
-      signOptions: { expiresIn: '15m' },
+      // secret: 'GXtyJiKZq2cQFmEeAnHzNslLSf5PrWhv',
+      // signOptions: { expiresIn: '15m' },
     }),  
   ],
   providers: [

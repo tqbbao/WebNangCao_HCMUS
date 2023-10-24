@@ -13,6 +13,7 @@ import { LoggerService } from './helpers/LoggerServiceWinston';
 import { AuthModule } from './auth/auth.module';
 import { User } from './entity/user.entity';
 import { ConfigModule } from '@nestjs/config';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { ConfigModule } from '@nestjs/config';
     ActorModule,
     FilmModule,
     AuthModule,
+    HttpModule,
   ],
   controllers: [AppController],
   providers: [

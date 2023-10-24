@@ -7,6 +7,8 @@ import { CustomException } from 'src/utils/filters/custom-exception';
 import { FILM_NOT_FOUND, USER_NO_CONTENT } from 'src/utils/errors/errors.constants';
 import { UpdateFilmDTO } from './dto/update-film.dto';
 import { CreateFilmDTO } from './dto/create-film.dto';
+import { AuthGuard } from 'src/auth/guards/auth.guard';
+@UseGuards(AuthGuard)
 @ApiTags('film')
 @Controller('film')
 export class FilmController {

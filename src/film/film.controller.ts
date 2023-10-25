@@ -35,16 +35,15 @@ export class FilmController {
         // }
         // return films;
 
-        console.log("request.url", request.url)
+        //console.log("request.url", request.url)
         const temp = await this.serverBService.fetchDataFromServerB(request.url);
-        console.log("temp", temp)
+        //console.log("temp", temp)
         //const circularJSONString = CircularJSON.stringify(temp);
         //console.log("circularJSONString", circularJSONString.data)
         //console.log(response.status(200).json(temp.data));
         
         const re = response.status(200).json(temp.data);
         
-        //return re;
     }
 
     @Get(':id')

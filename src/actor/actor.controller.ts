@@ -11,6 +11,7 @@ import {
   Patch,
   Post,
   Query,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { ActorService } from './actor.service';
@@ -27,13 +28,17 @@ import {
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CustomException } from 'src/utils/filters/custom-exception';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
+import * as CircularJSON from 'circular-json';
+import { Request } from 'express';
+import { ServerBService } from 'src/server-b/server-b.service';
 
 
 @UseGuards(AuthGuard)
 @ApiTags('actor')
 @Controller('actor')
 export class ActorController {
-  constructor(private readonly actorService: ActorService) {}
+  constructor(private readonly actorService: ActorService,
+    private readonly serverBService: ServerBService) {}
 
   @Get()
   @ApiQuery({ name: 'limit', required: false })
@@ -43,20 +48,17 @@ export class ActorController {
   @ApiResponse({ status: 204, description: 'No Content.' })
   @ApiResponse({ status: 400, description: 'Bad request.' })
   @HttpCode(HttpStatus.OK)
-  async findAll(
+  async findAll(@Req() request: Request,
     @Query() pagination: IPaginationOptions,
-  ): Promise<{ message: string; statusCode: number; data: Actor[] }> {
+  ): Promise<Actor[]> {
     const actors = await this.actorService.findAll(pagination);
 
     if (actors.length === 0) {
       throw new CustomException(USER_NO_CONTENT, HttpStatus.NO_CONTENT);
     }
 
-    return {
-      message: 'Find all successfully',
-      statusCode: HttpStatus.OK,
-      data: actors,
-    };
+    return actors;
+
   }
 
   @Get(':id')

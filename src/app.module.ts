@@ -14,6 +14,7 @@ import { AuthModule } from './auth/auth.module';
 import { User } from './entity/user.entity';
 import { ConfigModule } from '@nestjs/config';
 import { HttpModule } from '@nestjs/axios';
+import { ServerBModule } from './server-b/server-b.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { HttpModule } from '@nestjs/axios';
     FilmModule,
     AuthModule,
     HttpModule,
+    ServerBModule,
   ],
   controllers: [AppController],
   providers: [

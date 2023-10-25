@@ -36,7 +36,6 @@ export class AuthGuard implements CanActivate {
         419,
       );
     }
-
     return true;
   }
 

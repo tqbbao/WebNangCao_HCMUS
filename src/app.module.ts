@@ -13,6 +13,7 @@ import { LoggerService } from './helpers/LoggerServiceWinston';
 import { AuthModule } from './auth/auth.module';
 import { User } from './entity/user.entity';
 import { ConfigModule } from '@nestjs/config';
+import { AppGateway } from './app.gateway';
 
 @Module({
   imports: [
@@ -21,8 +22,8 @@ import { ConfigModule } from '@nestjs/config';
       host: 'localhost',
       port: 3306,
       username: 'root',
-      password: 'admin123',
-      database: 'temp_sakila',
+      password: '123456',
+      database: 'test-sakila',
       entities: [Actor, Film, Language, User],
       synchronize: false,
     }),
@@ -32,9 +33,6 @@ import { ConfigModule } from '@nestjs/config';
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [
-    AppService,
-  ],
-
+  providers: [AppService, AppGateway],
 })
 export class AppModule {}

@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-@Entity("actor")
+@Entity('actor', { schema: 'test-sakila' })
 export class Actor {
   @PrimaryGeneratedColumn({
     type: "smallint",
@@ -19,4 +19,11 @@ export class Actor {
     default: () => "CURRENT_TIMESTAMP",
   })
   lastUpdate: Date;
+
+  @Column("timestamp", {
+    name: "created_at",
+    default: () => "CURRENT_TIMESTAMP",
+  })
+  created_at: Date;
+
 }

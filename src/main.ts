@@ -6,6 +6,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { LoggerInterceptor } from './interceptors/logger.interceptor';
 import { LoggerServiceRotation } from './helpers/LoggerServiceRotation';
 import { LoggerService } from './helpers/LoggerServiceWinston';
+import { Server } from "socket.io";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -21,6 +22,7 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
+
   await app.listen(3000);
 }
 bootstrap();

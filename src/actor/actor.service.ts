@@ -1,12 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Actor } from '../entity/actor.entity';
-import { DeleteResult, Repository } from 'typeorm';
+import { DeleteResult, MoreThan, Repository } from 'typeorm';
 import { CreateActorDTO } from './dto/create-actor.dto';
 import { UpdateActorDTO } from './dto/update-actor.dto';
 import { IPaginationOptions } from 'src/utils/types/pagination-options';
 import { USER_NOT_FOUND } from 'src/utils/errors/errors.constants';
 import { DeepPartial } from 'typeorm';
+import * as moment from 'moment'; // Import the Moment.js library
+
 @Injectable()
 export class ActorService {
   constructor(
@@ -23,8 +25,18 @@ export class ActorService {
     return await this.actorRepository.find({
       skip: skip,
       take: limit,
-      order: { actorId: 'ASC'}
-    })
+      order: { actorId: 'ASC' },
+    });
+  }
+
+  async filterByTimestamp(ts: any): Promise<Actor[]> {
+    const timestampToQuery = moment(parseInt(ts)).format('YYYY-MM-DD');
+    console.log('timestampToQuery: ', timestampToQuery);
+    const actors = await this.actorRepository.find({
+      where: { created_at: MoreThan(new Date(timestampToQuery)) },
+    });
+    console.log(actors);
+    return actors;
   }
 
   async findById(actor_id: number): Promise<Actor> {
@@ -32,7 +44,7 @@ export class ActorService {
   }
 
   async create(createActor: CreateActorDTO): Promise<Actor> {
-    const actor = this.actorRepository.create(createActor );
+    const actor = this.actorRepository.create(createActor);
     return await this.actorRepository.save(actor);
   }
 
@@ -41,7 +53,6 @@ export class ActorService {
     if (!testActor) throw new NotFoundException(USER_NOT_FOUND);
 
     await this.actorRepository.update(actor_id, updateActor);
-
 
     return await this.findById(actor_id);
   }

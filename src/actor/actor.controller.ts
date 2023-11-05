@@ -17,7 +17,7 @@ import { Actor } from '../entity/actor.entity';
 import { CreateActorDTO } from './dto/create-actor.dto';
 import { UpdateActorDTO } from './dto/update-actor.dto';
 import { IPaginationOptions } from 'src/utils/types/pagination-options';
-import { Not } from 'typeorm';
+import { Not, Timestamp } from 'typeorm';
 import { HttpExceptionFilter } from 'src/utils/filters/http-exception.filter';
 import {
   USER_NOT_FOUND,
@@ -40,9 +40,19 @@ export class ActorController {
   @HttpCode(HttpStatus.OK)
   async findAll(
     @Query() pagination: IPaginationOptions,
-  ): Promise<{ message: string; statusCode: number; data: Actor[] }> {
-    const actors = await this.actorService.findAll(pagination);
-
+    @Query('ts') ts: any,
+  ): Promise<{
+    message: string;
+    statusCode: number;
+    data: Actor[];
+    ts: any;
+  }> {
+    let actors = await this.actorService.findAll(pagination);
+    const currentTimestamp = Date.now();
+    const queryTimestamp = currentTimestamp;
+    if (ts) {
+      actors = await this.actorService.filterByTimestamp(ts);
+    }
     if (actors.length === 0) {
       throw new CustomException(USER_NO_CONTENT, HttpStatus.NO_CONTENT);
     }
@@ -51,6 +61,7 @@ export class ActorController {
       message: 'Find all successfully',
       statusCode: HttpStatus.OK,
       data: actors,
+      ts: queryTimestamp,
     };
   }
 
@@ -83,6 +94,7 @@ export class ActorController {
   async create(
     @Body() createActor: CreateActorDTO,
   ): Promise<{ message: string; statusCode: number; data: Actor }> {
+    console.log(createActor);
     const actor = await this.actorService.create(createActor);
     return {
       message: 'Create a new actor successfully',
